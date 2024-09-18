@@ -1,3 +1,7 @@
+---
+search:
+  exclude: true
+---
 #Benvigut/da al MkDocs de Marc Sabate!
 
 Per a la documentació completa visita [mkdocs.org](https://www.mkdocs.org).
