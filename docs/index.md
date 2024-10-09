@@ -1,8 +1,4 @@
----
-search:
-  exclude: true
----
-#Benvigut/da al MkDocs de Marc Sabate!
+#Implantació de sistemes operatius
 
 Per a la documentació completa visita [mkdocs.org](https://www.mkdocs.org).
 

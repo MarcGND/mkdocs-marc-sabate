@@ -2,21 +2,21 @@
 
 ##Instal·lació, Configuració Inicial i Programari de Base
 
-En aquesta primera part veurem el procés d'instal·lació d'una màquina virtual, les llicencies que te, com generar punts de restauració, com es fa la configuració de la xarxa, a instal·lar el programari i finalment com funciona un gestor d'arrancada.
+En aquesta primera part veurem el procés d'instal·lació d'una màquina virtual, les llicències que té, com generar punts de restauració, com es fa la configuració de la xarxa, a instal·lar el programari i finalment com funciona un gestor d'arrancada.
 
 ##Instal·lació
-En aquest apartat veurem pas per pas com fer l'instal·lació d'Ubuntu i les particions que li donarem al disc en el nostre cas.
+En aquest apartat veurem pas per pas com fer la instal·lació d'Ubuntu i les particions que li donarem al disc en el nostre cas.
 
-- Primerament hem de crear una màquina nova amb l'imatge ISO, seguidament li donarem l'enmagatzematge, procesadors i RAM. Un cop fet aquest pas abans de començar l'instal·lació hem de configurar la xarxa dedes les eines, en aquest cas escollim una NAT.
+- Primerament, hem de crear una màquina nova amb la imatge ISO, seguidament li donarem l'emmagatzematge, processadors i RAM. Un cop fet aquest pas abans de començar la instal·lació hem de configurar la xarxa des de les eines, en aquest cas escollim una NAT.
 ![Primerpas](Instalacio1.png)
 
-- A les opcions de xarxa ens connectem a la xarxa NAT que em creat prèviament.
+- A les opcions de xarxa ens connectem a la xarxa NAT que hem creat prèviament.
 ![Segonpas](Instalacio2.png)
-- Un cop tenim la coniguració prèvia, comencem l'instal·lació. Entrem a l'opció d'instal·lar.
+- Un cop tenim la configuració prèvia, comencem la instal·lació. Entrem a l'opció d'instal·lar.
 ![Tercerpas](Instalacio3.png)
 - Seugidament triem l'idioma
 ![Cuartopas](Instalacio4.png)
-- A continuació les opcions d'accecibilitat, disposició del teclat, la connexió a internet i per últim seleccionem l'opció d'instal·lar Ubuntu amb l'opció interactiva i seguidament la selecció predeterminada. No instalarem els programes recomanats. 
+- A continuació les opcions d'accessibilitat, disposició del teclat, la connexió a internet i per últim seleccionem l'opció d'instal·lar Ubuntu amb l'opció interactiva i seguidament la selecció predeterminada. No instal·larem els programes recomanats.
 ![Cinquetopas](Instalacio5.png)
 ![Sisépas](Instalacio6.png)
 ![Septimpas](Instalacio7.png)
@@ -26,8 +26,8 @@ En aquest apartat veurem pas per pas com fer l'instal·lació d'Ubuntu i les par
 ![Undècim](Instalacio11.png)
 ![Duodècim](Instalacio12.png)
 ![Decimotercer](Instalacio13.png)
-- En aquesta opció de configuració seleccionarem la manual, aquí podrem determinar les parts del disco i segons la necessitat donar-li mes o menys espai a cada part.
-- En primera part designarem un espai de 5GB amb un format SWAP. A continuació un espai per a /home que es la carpeta on aniràn les apliacacions i documents, per tant li donarem 30GB amb format Ext4. I per últim un espai de 18,68GB a la partició on anirà situat el sistema operatiu. 
+- En aquesta opció de configuració seleccionarem la manual, aquí podrem determinar les parts del disc i segons la necessitat donar-li més o menys espai a cada part.
+- En primera part designarem un espai de 5GB amb un format SWAP. A continuació un espai per a /home que és la carpeta on aniran les aplicacions i documents, per tant, li donarem 30GB amb format Ext4. I en conclusió un espai de 18,68GB a la partició on anirà situat el sistema operatiu.
 ![Decimocuart](Instalacio14.png)
 ![Decimoquint](Instalacio15.png)
 ![Decimosext](Instalacio16.png)
@@ -35,10 +35,10 @@ En aquest apartat veurem pas per pas com fer l'instal·lació d'Ubuntu i les par
 ![Decimovuitè](Instalacio18.png)
 ![Decimonovè](Instalacio19.png)
 ![Vigésim](Instalacio20.png)
-- Per anar acabant amb l'instal·lació crearem una compta al nostre gust.
+- Per anar acabant amb la instal·lació crearem un compte al nostre gust.
 ![Vigésim primer](Instalacio21.png)
 ![Vigésim segon](Instalacio22.png)
-- Finalment podem revisar les nostres opcions abans d'instalar. Un cop acabat reiniciem l'ubuntu i ja el tenim preparat per fer-lo servir.
+- Finalment, podem revisar les nostres opcions abans d'instal·lar. Un cop acabat reiniciem l'Ubuntu i ja el tenim preparat per fer-lo servir.
 ![Vigésim tercer](Instalacio23.png)
 ![Vigésim quart](Instalacio24.png)
 ![Vigésim cinquè](Instalacio25.png)
@@ -61,20 +61,81 @@ Programari Lliure (PL): ha de complir 4 llibertats:
 - Millorar-lo i distribuir les modificacions
 
 ###- Llicencia CC
-La llicencia CC es una eina legal i gratuita que permet protegir les obres amb drets d'autor. En aquest cas la meva pàgina utilitzarà una CC: BY NC SA.
+La llicencia CC es una eina legal i gratuita que permet protegir les obres amb drets d'autor. En aquest cas aquesta pàgina utilitzarà una CC: BY NC SA.
 
 ![CC](CC.png)
 
 Aquesta simbologia significa que s'ha d'atribuir l'autoria, permet l'edició, no permet l'us comercial i permet la modificació i distribució.
 ###- Ubuntu
-
+Ubuntu es sistema operatiu de codi obert i gratuit, utilitza la llicencia GNU (General public license: [gnu.org](https://www.gnu.org/licenses/fdl-1.3.html)), aquesta llicencia permet la copia, distribució i modificació del codi.  
 
 
 ##Punts de restauració
+###- Concepte en ubuntu
+Amb el sistema operatiu d'ubuntu
+ex4 no porta punts de restauració
+sistema de fitxers d'instantenes que treballa en volums = btrfs, no partició. L'eina del timeshift fa imatges del sistema a les que es poden tornar.
 
-##Configuració de xarxa bàsica de 
+- En primer lloc, des del terminal instal·larem el timeshift tal com s'indica a les imatges.
+![timeshift1](timeshift1.png)
+- Un cop tenim el timeshift instal·lat l'executem i el configurem, el programa ens permet guardar en quin estat es troben les carpetes que tenim al nostre dispositiu, amb aquest punt guardat podrem tornar amb cas de pèrdua de dades o mal funcionaments. A més a més, el timeshift té l'opció de crear punts de restauració per dia, hora, més o setmana.
+![timeshift2](timeshift2.png)
+- Seguim la configuració predeterminada.
+![timeshift3](timeshift3.png)
+- Un cop feta la configuració crearem una carpeta per comprovar el funcionament. I seguidament instaurem el punt de restauració i on el guardem.
+![timeshift4](timeshift4.png)
+Com es pot comprovar a la següent imatge, ja tenim la instantània creada.
+![timeshift5](timeshift5.png)
+- Per acabar posarem en prova el seu funcionament, en aquest cas s'elimina la carpeta "hola", un cop esborrada anem a l'instantània i la restaurem, un cop acaba el procés podem observar que la carpeta s'ha restaurat.
+![timeshift6](timeshift6.png)
+![timeshift7](timeshift7.png)
+
+
+##Configuració de xarxa bàsica
+Per configurar la xarxa en primera instancia podem veure la configuració a través dels paràmetres a l'opció de xarxa. Des d'aquest punt entrem a les opcions del cablejat per comprovar quina IP tenim i amb el mode manual la podem canviar al nostre gust.
+![Xarxa3](Xarxa3.png)
+Seguidament obrim la terminal i amb un ping comprovem que la connexió s'hagi establert correctament.
+![Xarxa4](Xarxa4.png)
+L'altra opció per configurar la xarxa es utilitzant el terminal i canviant el netplan, en aquest cas em d'editar l'arxiu network manager.
+![Xarxa2](Xarxa2.png)
+A continuació em de guardar a l'arxiu, l'adressa i les rutes com es mostra a la següent imatge. Un cop fet això guardem l'arxiu i apliquem el "netplan" amb una comanda.
+![Xarxa1](Xarxa1.png)
+Finalment comprovem amb un altre ping si la connexió funciona correctament.
 
 
 ##Instalacions de programari
 
 ##Gestors d'arrancada
+Un gestor d'arranc es una eina que es troba a una partició del disc, la MBR (master boot record), i es la que fa que ens carregui el sistema operatiu. En aquest cas Ubuntu instal·la per defecte el GRUB, es el software que ens farà arrancar el sistema. 
+
+Per recuperar el gestor d'arranc podem utilitzar algunes eines en aquest cas n'he documentat dos, el bootrepair i el grub2.
+###- Bootrepair
+- En primer lloc eliminarem la carpeta grub del sistema
+![gestor1](gestor1.png)
+- A continuació veurem que no ens arranca el sistema, llavors instalem la iso del bootrepair a la màquina virtual i arrancarem el sistema amb el bootrepair.
+![gestor2](gestor2.png)
+![gestor3](gestor3.png)
+![gestor4](gestor4.png)
+- Un cop arranquem amb el bootrepair és molt senzill, sol hem de seguir els passos que ens dona el propi sitstema tal i com es mostra a continuació.
+![gestor5](gestor5.png)
+![gestor6](gestor6.png)
+![gestor7](gestor7.png)
+![gestor8](gestor8.png)
+- Un cop seguits tots els procediments recomanats del bootrepair sen's reiniciarà el sistema (nota: important demontar l'imatge ISO). A continuació veurem com el sistema arranca correctament.
+![gestor9](gestor9.png)
+
+###- Grub2
+- Per començar repetim el primer pas de borrar la carpeta grub del nostre sistema.
+![gestor1](gestor1.png)
+![gestor10](gestor10.png)
+- Seguidament instalem l'ISO del grub2 a la nostra màquina virutal.
+![gestor11](gestor11.png)
+- A continuació sen's executarà el menú del grub2, personalment el primer que he fet es canviar l'idioma. Després busquem l'opció de detectar els sistemes d'arrancada. Tindrem varies opcions, en aquest cas escollim la primera la generica de Linux. 
+![gestor12](gestor12.png)
+![gestor13](gestor13.png)
+![gestor14](gestor14.png)
+- Desrpés s'obrirà el sistema com de costum, un cop tenim el sistema obert em de seguir els següents pasos per restaurar la carpeta grub.
+![gestor15](gestor15.png)
+![gestor19](gestor19.png)
+- Amb aquestes comandes el que fem es instalar la carpeta grub de nou amb els permisos root, i després l'actualitzem per assegurar-nos que contingui tot el necessari per una arrancada correcta del sistema. Com podem comprovar en l'última imatge. (nota: important eliminar la ISO del grub2 al tornar a arrencar el sistema).
+![gestor20](gestor20.png)
