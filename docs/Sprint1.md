@@ -96,7 +96,7 @@ Per configurar la xarxa en primera instancia podem veure la configuració a trav
 ![Xarxa3](Xarxa3.png)
 - Seguidament obrim la terminal i amb un ping comprovem que la connexió s'hagi establert correctament.
 ![Xarxa4](Xarxa4.png)
-L'altra opció per configurar la xarxa es utilitzant el terminal i canviant el netplan, en aquest cas em d'editar l'arxiu network manager.
+- L'altra opció per configurar la xarxa es utilitzant el terminal i canviant el netplan, en aquest cas em d'editar l'arxiu network manager.
 ![Xarxa2](Xarxa2.png)
 - A continuació em de guardar a l'arxiu, l'adressa i les rutes com es mostra a la següent imatge. Un cop fet això guardem l'arxiu i apliquem el "netplan" amb una comanda.
 ![Xarxa1](Xarxa1.png)
