@@ -84,7 +84,7 @@ sistema de fitxers d'instantenes que treballa en volums = btrfs, no partició. L
 ![timeshift3](timeshift3.png)
 - Un cop feta la configuració crearem una carpeta per comprovar el funcionament. I seguidament instaurem el punt de restauració i on el guardem.
 ![timeshift4](timeshift4.png)
-Com es pot comprovar a la següent imatge, ja tenim la instantània creada.
+- Com es pot comprovar a la següent imatge, ja tenim la instantània creada.
 ![timeshift5](timeshift5.png)
 - Per acabar posarem en prova el seu funcionament, en aquest cas s'elimina la carpeta "hola", un cop esborrada anem a l'instantània i la restaurem, un cop acaba el procés podem observar que la carpeta s'ha restaurat.
 ![timeshift6](timeshift6.png)
@@ -94,16 +94,35 @@ Com es pot comprovar a la següent imatge, ja tenim la instantània creada.
 ##Configuració de xarxa bàsica
 Per configurar la xarxa en primera instancia podem veure la configuració a través dels paràmetres a l'opció de xarxa. Des d'aquest punt entrem a les opcions del cablejat per comprovar quina IP tenim i amb el mode manual la podem canviar al nostre gust.
 ![Xarxa3](Xarxa3.png)
-Seguidament obrim la terminal i amb un ping comprovem que la connexió s'hagi establert correctament.
+- Seguidament obrim la terminal i amb un ping comprovem que la connexió s'hagi establert correctament.
 ![Xarxa4](Xarxa4.png)
 L'altra opció per configurar la xarxa es utilitzant el terminal i canviant el netplan, en aquest cas em d'editar l'arxiu network manager.
 ![Xarxa2](Xarxa2.png)
-A continuació em de guardar a l'arxiu, l'adressa i les rutes com es mostra a la següent imatge. Un cop fet això guardem l'arxiu i apliquem el "netplan" amb una comanda.
+- A continuació em de guardar a l'arxiu, l'adressa i les rutes com es mostra a la següent imatge. Un cop fet això guardem l'arxiu i apliquem el "netplan" amb una comanda.
 ![Xarxa1](Xarxa1.png)
-Finalment comprovem amb un altre ping si la connexió funciona correctament.
+- Finalment comprovem amb un altre ping si la connexió funciona correctament.
 
 
 ##Instalacions de programari
+En aquesta secció veurem com instal·lar diversos programes amb diferents tipus d'executables i com fer-ho desde el terminal. És important saber que en Ubuntu podem instal·lar programes i apliacacions desde l'App center.
+
+- En primer lloc farem una actualització de les apliacacions ja instalades.
+![programari3](programari3.png)
+- Amb la següent comanda eliminarem paquets del SO que ja no s'utilitzen.
+![programari4](programari4.png)
+- Per als paquets .deb utilitzarem la comanda dpkg -i, en aquest cas instal·larem el Pacman. Per assegurar-nos de que ho hem instal·lat correctament hi ha la comanda de dpkg -get-selections | grep pacman . Com es veu a la següent imatge la instal·lació s'ha realitzat correctament i s'executa. En casos d'error podem provar altres comandes com ara dpkg -r, dpkg -P.
+![programari5](programari5.png)
+![programari12](programari12.png) 
+- Per desinstal·lar paquets podem utilitzar la comanda apt remove paquet, també podem utilitzar apt purge paquet, que ens eliminarà també les configuracions. Per comprovar que hem eliminat correctament el paquet podem fer el següent.
+![programari7](programari7.png)
+- Un altra part important a l'hora d'instal·lar programari es saber que moltes vegades els arxius que ens descarregem es troben comprimits amb diferents tipus de formats, ja poden ser els .rar, .zip, .gz, .tar, etc... Per descomprimir aquests arxius podem utilitzar varies comandes segons la seva extensió: 
+tar xvf arxiu.tar
+gunzip arxiu.gz
+bunzip2 arxiu.bz2
+rar -x arxiu.rar
+unzip arxiu.zip
+- Un cop estan les carpetes descomprimides ens mourem dins de la carpeta amb la comanda cd, un cop estem situats al directori utilitzarem la comanda ./configure i seguidament amb el make install instal·larem l'aplicació, en cas de voler-la desinstal·lar el que em fet podem entrar un altre cop al directori i fer servir la comanda make uninstall.
+
 
 ##Gestors d'arrancada
 Un gestor d'arranc es una eina que es troba a una partició del disc, la MBR (master boot record), i es la que fa que ens carregui el sistema operatiu. En aquest cas Ubuntu instal·la per defecte el GRUB, es el software que ens farà arrancar el sistema. 
@@ -123,6 +142,7 @@ Per recuperar el gestor d'arranc podem utilitzar algunes eines en aquest cas n'h
 ![gestor8](gestor8.png)
 - Un cop seguits tots els procediments recomanats del bootrepair sen's reiniciarà el sistema (nota: important demontar l'imatge ISO). A continuació veurem com el sistema arranca correctament.
 ![gestor9](gestor9.png)
+
 
 ###- Grub2
 - Per començar repetim el primer pas de borrar la carpeta grub del nostre sistema.
