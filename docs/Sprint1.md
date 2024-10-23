@@ -1,10 +1,10 @@
-#Sprint 1
+# Sprint 1
 
-##Instal·lació, Configuració Inicial i Programari de Base
+## Instal·lació, Configuració Inicial i Programari de Base
 
 En aquesta primera part veurem el procés d'instal·lació d'una màquina virtual, les llicències que té, com generar punts de restauració, com es fa la configuració de la xarxa, a instal·lar el programari i finalment com funciona un gestor d'arrancada.
 
-##Instal·lació
+## Instal·lació
 En aquest apartat veurem pas per pas com fer la instal·lació d'Ubuntu i les particions que li donarem al disc en el nostre cas.
 
 - Primerament, hem de crear una màquina nova amb la imatge ISO, seguidament li donarem l'emmagatzematge, processadors i RAM. Un cop fet aquest pas abans de començar la instal·lació hem de configurar la xarxa des de les eines, en aquest cas escollim una NAT.
@@ -48,7 +48,7 @@ En aquest apartat veurem pas per pas com fer la instal·lació d'Ubuntu i les pa
 
 
 
-##Llicenciament 
+## Llicenciament 
 
 Programari Lliure (PL): ha de complir 4 llibertats:
 
@@ -60,18 +60,18 @@ Programari Lliure (PL): ha de complir 4 llibertats:
 
 - Millorar-lo i distribuir les modificacions
 
-###- Llicencia CC
+### - Llicencia CC
 La llicencia CC es una eina legal i gratuita que permet protegir les obres amb drets d'autor. En aquest cas aquesta pàgina utilitzarà una CC: BY NC SA.
 
 ![CC](CC.png)
 
 Aquesta simbologia significa que s'ha d'atribuir l'autoria, permet l'edició, no permet l'us comercial i permet la modificació i distribució.
-###- Ubuntu
+### - Ubuntu
 Ubuntu es sistema operatiu de codi obert i gratuit, utilitza la llicencia GNU (General public license: [gnu.org](https://www.gnu.org/licenses/fdl-1.3.html)), aquesta llicencia permet la copia, distribució i modificació del codi.  
 
 
-##Punts de restauració
-###- Concepte en ubuntu
+## Punts de restauració
+### - Concepte en ubuntu
 Amb el sistema operatiu d'ubuntu
 ex4 no porta punts de restauració
 sistema de fitxers d'instantenes que treballa en volums = btrfs, no partició. L'eina del timeshift fa imatges del sistema a les que es poden tornar.
@@ -91,7 +91,7 @@ sistema de fitxers d'instantenes que treballa en volums = btrfs, no partició. L
 ![timeshift7](timeshift7.png)
 
 
-##Configuració de xarxa bàsica
+## Configuració de xarxa bàsica
 Per configurar la xarxa en primera instancia podem veure la configuració a través dels paràmetres a l'opció de xarxa. Des d'aquest punt entrem a les opcions del cablejat per comprovar quina IP tenim i amb el mode manual la podem canviar al nostre gust.
 ![Xarxa3](Xarxa3.png)
 - Seguidament obrim la terminal i amb un ping comprovem que la connexió s'hagi establert correctament.
@@ -103,7 +103,7 @@ Per configurar la xarxa en primera instancia podem veure la configuració a trav
 - Finalment comprovem amb un altre ping si la connexió funciona correctament.
 
 
-##Instalacions de programari
+## Instalacions de programari
 En aquesta secció veurem com instal·lar diversos programes amb diferents tipus d'executables i com fer-ho desde el terminal. És important saber que en Ubuntu podem instal·lar programes i apliacacions desde l'App center.
 
 - En primer lloc farem una actualització de les apliacacions ja instalades.
@@ -124,11 +124,11 @@ unzip arxiu.zip
 - Un cop estan les carpetes descomprimides ens mourem dins de la carpeta amb la comanda cd, un cop estem situats al directori utilitzarem la comanda ./configure i seguidament amb el make install instal·larem l'aplicació, en cas de voler-la desinstal·lar el que em fet podem entrar un altre cop al directori i fer servir la comanda make uninstall.
 
 
-##Gestors d'arrancada
+## Gestors d'arrancada
 Un gestor d'arranc es una eina que es troba a una partició del disc, la MBR (master boot record), i es la que fa que ens carregui el sistema operatiu. En aquest cas Ubuntu instal·la per defecte el GRUB, es el software que ens farà arrancar el sistema. 
 
 Per recuperar el gestor d'arranc podem utilitzar algunes eines en aquest cas n'he documentat dos, el bootrepair i el grub2.
-###- Bootrepair
+### - Bootrepair
 - En primer lloc eliminarem la carpeta grub del sistema
 ![gestor1](gestor1.png)
 - A continuació veurem que no ens arranca el sistema, llavors instalem la iso del bootrepair a la màquina virtual i arrancarem el sistema amb el bootrepair.
@@ -144,7 +144,7 @@ Per recuperar el gestor d'arranc podem utilitzar algunes eines en aquest cas n'h
 ![gestor9](gestor9.png)
 
 
-###- Grub2
+### - Grub2
 - Per començar repetim el primer pas de borrar la carpeta grub del nostre sistema.
 ![gestor1](gestor1.png)
 ![gestor10](gestor10.png)
