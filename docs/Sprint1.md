@@ -159,3 +159,4 @@ Per recuperar el gestor d'arranc podem utilitzar algunes eines en aquest cas n'h
 ![gestor19](gestor19.png)
 - Amb aquestes comandes el que fem es instalar la carpeta grub de nou amb els permisos root, i després l'actualitzem per assegurar-nos que contingui tot el necessari per una arrancada correcta del sistema. Com podem comprovar en l'última imatge. (nota: important eliminar la ISO del grub2 al tornar a arrencar el sistema).
 ![gestor20](gestor20.png)
+
