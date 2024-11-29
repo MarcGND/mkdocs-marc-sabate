@@ -5,7 +5,7 @@ En aquest sprint veurem com es gestionen els usuaris, grups  i permisos d'un sis
 
 # Gestió d'usuaris grups i permisos
 ## - Commandes terminal i accessos als directoris
-Per a accedir al terminal normalment ho faremt amb un crtl + alt + t, així obrim el pseudo terminal. El terminal com a tal l'obrirem al el ctrl dret + F3, aquest es un terminal TTY.
+Per a accedir al terminal normalment ho faremt amb un crtl + alt + t, així obrim el pseudo terminal. El terminal com a tal l'obrirem al el ctrl dret + F3, aquest es un terminal TTY. Un pseudo terminal es com un emulador on les comandes que posem son interpretades per algún arxiu al que fan referencia i aquest fa els procediments, en canvi amb un terminal si que estem amb contacte directe amb el sistema.
 
 - En primer lloc per comprovar tots els usuaris que conte el nostre sistema ho farem amb la següent comanda. Els usuaris que es poden controlar per interfície gràfica es troben a partir del número 1000.
 ```
@@ -85,6 +85,7 @@ userdel -r usuari
 id usuari
 ```
 ![gestiousu18](gestiousu18.png)
+
 ## - Creació de grups
 - En aquest apartat veurem com funcionen els grups d'usuaris, com hem vist anteriorment podem consultar els grups i les seves contrasenyes. Important dir que quan es crea un usuari també es crea un grup amb el nom d'aquest. 
 - Per crear un grup nou ho podem fer amb una senzilla comanda.
@@ -146,6 +147,34 @@ groupmod -n grupnou grupvell
 
 
 # Gestió de permisos
+En els casos d'un sistema multiusuari on vulguem que diferents usuaris tinguin certs permisos però no els mateixos, és important fer una bona gestió d'aquestos. Hi han vaires maneres de gestionar-ho, i les veurem a conitnuació.
+
+## Permisos estandars
+- Els permisos estandars son una serie de permisos bàsics que es poden donar a tots els usuaris i grups. Els grups poden tenir diferents permisos respecte als usuaris, una forma de comprovar això ho podem fer de la següent forma.
+```
+ls -l 
+```
+![permis](permisbasic.png)
+- En aquest cas podem observar que el primer root que apareix és de l’usuari i el segon és del grup principal. També surt la data de creació i noms de directori, però la part important és al principi.
+![permis1](permisbas1.png)
+-  Aquí es on podem apreciar els permisos que hi han dins dels directoris. Després de la lletra d, els primers permisos són els d'usuari "rwx" en aquest cas, això vol dir que por llegir, escriure i executar, bàsicament te tots els permisos. Després els següents permisos son els de grup equivalents a les 3 lletres següents: "r-x", en aquest cas com podem veure no te permisos per escriure. I per últim tenim els ultims 3 caràcters que equivalen a altres, usuaris que no són ni usuari principal ni formen part del grup principal, en aquest cas: "r-x", la mateixa situació que abans no poden escriure però si llegir i executar. Aquest exemple es amb "root".
+- A continuació veurem com nosaltres podem agregar permisos als usuaris i grups. 
+```
+chmod -R
+```
+- Opcions de fitxer/carpeta
+```
+chrgp -R
+```
+- Grup propietari fitxer/carpeta
+```
+chown - R
+```
+- Propietari fitxer/carpeta.
+## Permisos especials
+el suid - es fa un script per a que els usuaris que no siguin root facin una comanda unica amb permisos únics
+sticky
+sgid  
 
 # Sistemes de fitxers i particions
 
