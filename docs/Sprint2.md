@@ -1,7 +1,108 @@
 ## Introducció
 En aquest sprint veurem com es gestionen els usuaris, grups  i permisos d'un sistema en Linux. També configurarem les polítiques de seguretat per a comptes d'usuaris i per al sistema. Instal·larem i configurarem serveis i processos essencials del sistema operatiu, crearem i administrarem sistesmes de fitxers i noces particions. Implementarem un sistema de còpies de seguretat i per últim farem proves per comprovar el funcionament del sistema. 
 # Gestió de processos
+- En primer lloc definirem un procés. Aquest es un programa en execució que inclou dins seu: el seu codi, els recursos que te assignats i la seva execució. El procesos de linux poden ser en primer o en segon pla. Els que estàn en primer pla implequen una interacció amb l'usuari mentre que als de segon pla no es requereix aquesta interacció.
+- La primera comada que utilitzarem per llistar els procesos es "pstree", aquesta ens mostrarà els processos actius que hi ha i quins son els seus fills si es que en té, tot això amb forma d'arbre, d'aquí el nom.
+```
+pstree
+```
+![procesos1](procesos1.png)
+![procesos2](procesos2.png)
+- Amb la mateixa comanda si volem saber a l'usuari que correspon i  a quin número de procés tenim ho podem realitzar amb les lletres h (usuari) i p (procés).
+```
+pstree -p -h usuari
+```
+![procesos3](procesos3.png)
+- A continuació veurem com matar un procés, per això serà necessari saber quin número de procés li correspon a cadascun d'aquestos. En el cas de matar un procés pare tots els processos fills haurien de morir, tot i que hi ha una possibiltat de que algún quedi viu, i aquestos s'anomenen zombies.
+- Per matar un procés utilitzarem la seguent comanda i el número de procés:
+```
+kill -9 (PID)
+```
+- Per fer la prova he utilitzat un altre terminal i m'he guardat el seu PID, per matar el procés tal i com es demostra a continuació:
+![procesos4](procesos4.png)
+![procesos5](procesos5.png)
+![procesos6](procesos6.png)
+- La comanda anterior fa una imatge dels processos, aquestos no canvien en temps real, per fer una consulta d'aquest tipus utilitzarem la comanda "top".
+```
+top
+```
+- Aquesta comanda ens dona molta informació per columnes, i ara veurem que vol dir cada columna. PID: Identificador únic del procés. USER: Usuari que inicia el procés. %CPU: Percentatge d'ús del processador. %MEM: Percentatge d'ús de la memòria RAM. COMMAND: Nom de la comanda o programa.
+![procesos7](procesos7.png)
+- En cas d'obrir un nou procés (ex: navegador) aquest ens apareixerà.
+![procesos8](procesos8.png)
+- La prioritat no es pot modificar directament, però amb el NI (nice) si que es pot canviar, contra mes baix es el número més prioritat té. Això es pot fer amb la següent comanda. Val a dir que caldria fer-ho des de el root ja que com sabem ens otorga més privilegis.
 
+```
+renice -n -nºprioritat -p PID
+```
+![procesos9](procesos9.png)
+![procesos10](procesos10.png)
+- Aquesta comanda serveix per moments determinats la prioritat per renice no es permanent.
+- Seguidament també podem utilitzar la comanda "ps aux" que ens dona una informació similar però amb diferents parametres que veurem a continuació: USER: Usuari que ha iniciat el procés. PID: Identificador únic del procés. %CPU i %MEM: Percentatge de CPU i memòria RAM utilitzats pel procés. VSZ: Memòria virtual total utilitzada pel procés. RSS: Memòria física utilitzada pel procés. TTY: Terminal associat al procés ( ? si no en te). STAT: Estat del procés. R	Executant-se (Running). S = Inactiu. T = Pausat. Z = Procés zombi. I = Inactiu o sense consumir recursos. <	= Alta prioritat de CPU. s = Líder de sessió. l	= Multithread. + = Associat al terminal en primer pla.
+```
+ps aux
+```
+![procesos11](procesos11.png)
+- Amb el ps podem fer varies combinacions per mostrar informació en concret a continuació veurem quines són i que fan.
+```
+ps -e
+```
+- Mostra tots els procesos del sistema amb una sintaxis estandar.
+```
+ps -ejH
+```
+- Mostra un arbre de procesos-
+```
+ps -eLf
+```
+- Mostra la informació dels fils (threads).
+```
+ps -eM
+```
+- Mostra informació de seguretat
+```
+ps -U
+```
+- Mostra tots els processos de root.
+
+- A continuació veurem que són els processos amb segon pla i com passar processos a aquest estat. Com hem dit abans amb el kill -9 matem un procés i amb el ctrl+c l'aturem i amb el ctrl+z si que el passariem a segon pla. (Nota: segons el tipus de procés que aturem, si aquest va per terminal igaul no se'ns mostra en segon pla).
+- La comada per veure els processos en segon pla es la següent.
+```
+jobs
+```
+![procesos12](procesos12.png)
+- Un cop tenim aquest procés localitzat i no volem matar-lo sino que el volem enviar al primer pla podem utilitzar la següent comanda.
+```
+fg %nº 
+```
+![procesos13](procesos13.png)
+![procesos14](procesos14.png)
+![procesos15](procesos15.png)
+- En cas de voler fer el procés invers i enviar un procés al segon pla podem utilitzar:
+```
+bg %nº
+```
+- En algun cas espacial igual volderm executar algun procés directament amb segon pla, i es pot fer de la seguent forma.
+```
+nomproces &
+```
+- A l'hora de consultar processos amb top em vist que es una eina en viu i que els processos que volem consultar es van movent i, a vegades se'ns pot fer complicat llegir-lo. En cas de voler evitar això i sol consultar el PID d'un procés en concret podem fer servir la següent comanda.
+```
+pgrep nomproces
+```
+![procesos16](procesos16.png)
+- Un altra forma de fer-ho podria ser utilitzant comandes anteriors i afegir un grep, pero en algunes opcions com el ps aux pot quedar una mica confós, personalment ho recomano amb el pstree ja que així veurem també els processos fills.
+```
+pstree | grep nomproces
+```
+![procesos17](procesos17.png)
+- Per acabar, si en algun moment volem utilitzar algún script o procés i que aquest tingui una prioritat predeterminada per nosaltres es pot fer amb el nice.
+```
+nice -n nºprioritat nomproces
+```
+![procesos18](procesos18.png)
+- Amb un "top" podem comprovar si ha funcionat correctament.
+![procesos19](procesos19.png)
 
 # Gestió d'usuaris grups i permisos
 ## - Commandes terminal i accessos als directoris
