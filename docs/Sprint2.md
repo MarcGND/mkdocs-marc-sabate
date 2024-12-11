@@ -244,13 +244,10 @@ groupmod -n grupnou grupvell
 ![gestiogrup11](gestiogrup11.png)
 ![gestiogrup12](gestiogrup12.png)
 
-
-
-
 # Gestió de permisos
 En els casos d'un sistema multiusuari on vulguem que diferents usuaris tinguin certs permisos però no els mateixos, és important fer una bona gestió d'aquestos. Hi han vaires maneres de gestionar-ho, i les veurem a conitnuació.
 
-## Permisos estandars
+## - Permisos estandars
 - Els permisos estandars son una serie de permisos bàsics que es poden donar a tots els usuaris i grups. Els grups poden tenir diferents permisos respecte als usuaris, una forma de comprovar això ho podem fer de la següent forma.
 ```
 ls -l 
@@ -272,10 +269,71 @@ chrgp -R
 chown - R
 ```
 - Propietari fitxer/carpeta.
-## Permisos especials
-el suid - es fa un script per a que els usuaris que no siguin root facin una comanda unica amb permisos únics
-sticky
-sgid  
+- Cada lletra dels permisos te un significat associat: u = usuari, g = grup, o = others, a = all.
+
+## - Permisos especials
+### - Sticky
+- L'sticky es un permís d'accés per fitxers i directoris. Quan l'apliquem l'únic usuari que el pot canviar es el root. Es pot aplicar de la següent manera.
+```
+chmod +t directori
+```
+```
+chmod 1775 directori
+```
+- Això es molt útil en sistemes multiusuari ja que sol el root i l'usuari que ha creat cert directori poden borrar o modificar el directori, els altres sol tenen permisos de lectura o escriptura. En cas de voler eliminar l'sticky podem utilitzar la següent comanda.
+```
+chmod -t directori
+```
+### - sgid
+- sgid es un permís que esta relacionar amb els grups i principalment permet que qualsevol usuari executi l'arxiu com si fos part del grup al que pertany aquell arxiu. Per utilitzar-la podem fer el següent.  
+```
+chmod g+s
+```
+### - suid
+- suid permet que un arxiu s'executi com si fos el propietari independentment de l'usuari que l'executi. Aquest a diferencia del sgid i sticky no es pot fer un script.
+```
+chmod g+s 
+```
+## - Llistes de control d'accés (ACLs)
+- Una llista de control d'accés son una serie de regles que ens permeten uns accesos a sistemes de fitxers en aquest cas. Aquestes llistes ens poden donar uns accesos mes restrictius o mes permisius segons la configuarció que faci l'usuari. Per crear una ACL utilitzem la següent comanda.
+```
+setfacl
+```
+```
+setfacl -m user:usuari:rw- exemple.text
+```
+```
+setfacl -m group:grup:rwx carpeta
+```
+```
+setfacl -b fitxer o carpeta
+```
+- Les restriccions venen donades per les lletres com hem vist abans, utilitza la mateixa nomenclatura. Per comprovar si les restriccions s'han aplicat correctament podem utilitzar la següent comanda.
+```
+getfacl
+```
+![acl](acl.png)
+
+- Si ens em equicocat a l'hora de configurar alguna ACL podem eliminar totes les excepcions. (TOTES).
+```
+setfacl -x usuari carpeta
+```
+## - Umask
+- Umask s'utilitza per canviar la mascara del mode de creació d'arxius, auesta determina el valor inicial dels permisos que tindran els arxius que es creein. De forma predeterminada la mascara te el valor dels bits de permís que NO s'han d'establir, per això fem l'operació de negació. Amb les seguents imatges entendrem millor la situació.
+
+![umask2](umask2.png)
+![umask](umask.png)
+- El que esta fetn umask es una operació coneguda com NOR, el que equivaldria a una resta convencional.
+- Aquestes operacions es poden realitzar amb la següent comanda, tot i que això sol funcionarà temporalment (els arxius ja creats no canvien de permisos).
+```
+umask + nº
+```
+- Per a que els canvis siguin permanents tenim que modificar la umask al arxiu que tenim a la següent ruta.
+```
+/etc/login.defs
+```
+- Un cop obert l'arxiu modifiquem el valor de la umask per defecte i aquest canvi si que es permantent.
+![umask3](umask3.png)
 
 # Sistemes de fitxers i particions
 ## - Estructura de la informació
@@ -327,3 +385,8 @@ e4defrag /dev/sda2 (desfragmentació)
 # Copia de seguretat i automatització de tasques
 
 # Quotes de disc
+
+# Enllaços d'interés
+```
+https://wiki.archlinux.org/title/Umask_(Espa%C3%B1ol)
+```
