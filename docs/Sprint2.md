@@ -105,10 +105,11 @@ nice -n nºprioritat nomproces
 ![procesos19](procesos19.png)
 
 # Gestió d'usuaris grups i permisos
+- Es important que al nostres sistema tinguem diferents usuaris i que aquestos tinguen diferents caracteristiques, i que els puguem incloure en grups per classificar-los. A més a més, també ens interessarà poder modificar-los, eliminar-los i bloquejar-los al nostre gust. Tot això i més ho veurem a continuació.
 ## - Commandes terminal i accessos als directoris
 Per a accedir al terminal normalment ho faremt amb un crtl + alt + t, així obrim el pseudo terminal. El terminal com a tal l'obrirem al el ctrl dret + F3, aquest es un terminal TTY. Un pseudo terminal es com un emulador on les comandes que posem son interpretades per algún arxiu al que fan referencia i aquest fa els procediments, en canvi amb un terminal si que estem amb contacte directe amb el sistema.
 
-- En primer lloc per comprovar tots els usuaris que conte el nostre sistema ho farem amb la següent comanda. Els usuaris que es poden controlar per interfície gràfica es troben a partir del número 1000.
+- En primer lloc veurem un document que actua com un registre de tots els comptes d'usuaris presents al sistema. Inclou dades com el nom del compte, l'identificador d'usuari (UID), el directori personal i el shell configurat per defecte. Es tracta d'un fitxer públic, cosa que permet que qualsevol pugui consultar qui són els usuaris del sistema.
 ```
 nano /etc/passwd
 ```
@@ -118,12 +119,12 @@ nano /etc/passwd
 nano /etc/group
 ```
 ![gestiousu2](gestiousu2.png)
-- A més a més també podem consultar les contrasenyes dels usuaris, això si encriptades i la seva caducitat.
+- A continuació, en aquest arxiu es guarda la informació relacionada amb les contrasenyes dels comptes d'usuari. Cada registre fa referència a un usuari i inclou la seva contrasenya codificada. Si apareix el símbol "!", això indica que el compte està deshabilitat i l'usuari no té permís per accedir al sistema.
 ```
 nano /etc/shadow
 ```
 ![gestiousu3](gestiousu3.png)
-- Per últim tenim una comanda que ensenya les contrasenyes del grup i la seva administració, també encriptat.
+- Per últim aquest arxiu és comparable a /etc/group, però ofereix detalls extres sobre els grups. En aquest lloc es pot identificar qui són els administradors de cada grup. Resulta pràctic per controlar els permisos i gestionar els privilegis d'accés dels diferents grups d'usuaris.
 ```
 nano /etc/gshadow
 ```
@@ -132,30 +133,45 @@ nano /etc/gshadow
 ## - Creació  d'usuaris
 Per crear usuaris tenim diverses formes de fer-ho, el més important es tenir clar que amb certes comandes no es creen directoris sol usuaris. A continuació es mostrarà com crear usuaris.
 
-- En primer lloc utilitzarem la següent comanda, aquesta ens creara un usuari pero fins que no fessim un log in amb aquest no ens crearà els directoris.
+- En primer lloc utilitzarem la següent comanda, aquesta ens creara un usuari pero fins que no fessim un log in amb aquest no ens crearà els directoris. Aquesta es la forma més senzilla de crear els usuaris ja que et ve pautada pel propi sistema operatiu.
 ```
 adduser usuari
 ```
 ![gestiousu5](gestiousu5.png)
-- A continuació si volem crear l'usuari amb els seus directoris podem crear-lo amb la segûent comanda.
+Per crear un nou compte d'usuari al sistema, farem servir la comanda useradd. Aquesta comanda ens permetrà afegir usuaris al sistema amb diversos paràmetres que ens ajuden a configurar les seves propietats. A continuació, detallem alguns dels paràmetres més destacats que podem utilitzar:
+
+- -m: Indica que es generarà automàticament un directori personal per a l'usuari.
+
+- -s /bin/bash: Aquest paràmetre ens permet definir el shell per defecte de l'usuari.
+
+- -d /home/alumne2: Amb aquest paràmetre, especifiquem el directori inicial de l'usuari. Per exemple, en aquest cas, el directori personal serà /home/alumne2.
+
+- alumne2: Correspon al nom de l'usuari que estem creant. En aquest exemple, l'usuari es dirà "alumne2".
+
+- && passwd alumne2: Aquesta comanda s’utilitza per assignar o modificar la contrasenya de l’usuari "alumne".
+
 ```
 useradd usuari
 ```
 ![gestiousu6](gestiousu6.png)
-- Per afegir els directoris haurem d'utilitzar la següent comanda.
+- Sino utilitzem la comanda -m per als directoris els podem afegir de la següetn manera.
 ```
 mkdir usuari
 ```
 ![gestiousu7](gestiousu7.png)
 ![gestiousu8](gestiousu8.png)
+
 - Si volem canviar el nom de l'usuari podem utilitzar la següent comanda. EN el cas que hi ha a continuació volem canviar el nom d'usuari de porva2, ja que hauria de ser prova2.
+
 ```
 usermod -l usernou user
 ```
 ![gestiousu15](gestiousu15.png)
 ![gestiousu16](gestiousu16.png)
 ![gestiousu17](gestiousu17.png)
+
 - En cas de voler eliminar accés a un usari ho podem fer bloquejant-lo, la comanda seria la següent. Una forma de comprovar que s'ha bloquejat correctament es entrar a la carpeta de passwd i veurem que la contrasenya del usuari al davant té un signe d'exclamació "!"
+
 ```
 usermod -L usuari
 ```
@@ -186,6 +202,13 @@ userdel -r usuari
 id usuari
 ```
 ![gestiousu18](gestiousu18.png)
+- Un cop vist com es el funcionament a través del terminal podrem observar com es fa per l'interficie gràfica d'Ubuntu. Dins de la configuració de sistema hem d'entrar a l'apartat usuaris, i després seguirem els passos que hi ha a continuació.
+![gestiousunou1](gestiousunou1.png)
+![gestiousunou2](gestiousunou2.png)
+![gestiousunou3](gestiousunou3.png)
+![gestiousunou4](gestiousunou4.png)
+![gestiousunou5](gestiousunou5.png)
+
 
 ## - Creació de grups
 - En aquest apartat veurem com funcionen els grups d'usuaris, com hem vist anteriorment podem consultar els grups i les seves contrasenyes. Important dir que quan es crea un usuari també es crea un grup amb el nom d'aquest. 
@@ -243,6 +266,104 @@ groupmod -n grupnou grupvell
 ```
 ![gestiogrup11](gestiogrup11.png)
 ![gestiogrup12](gestiogrup12.png)
+
+## - Configuració de fitxers d'usuari
+- Com hem vist tenim una serie de comandes per defecte que tenen una serie d'efectes sobre els usuaris que hem creat. Tot això es pot canviar, la seva útilitat resideix en que si volem que els nostres usuaris nous tinguin diferents directoris o inclús politiques de contrasenyes diferents. Ara veurem com es modifiquen els següents arxius.
+- El primer arixu que modificarem es el ``` /etc/default/useradd ``` que ens permet establir els valors predefinits per als nous usuaris, com la ruta del directori personal i el shell per defecte. Per configurar-lo utilitzem la següent comanda.
+```
+nano /etc/default/useradd
+```
+Els parametres que es poden modificar son els següents:
+- GROUP: Especifica el grup que s'assignarà com a grup principal per defecte als nous usuaris. Si està comentat o no existeix, el sistema crea un grup nou per a cada nou usuari amb el mateix nom que l'usuari.
+- HOME: Defineix la ruta base per als directoris de casa dels nous usuaris. Per defecte, és /home. Si vols canviar la ubicació dels directoris de casa, pots modificar aquest paràmetre.
+- INACTIVE: Estableix el nombre de dies després dels quals una contrasenya expirada passarà a estar inactiu si no es canvia. Un valor de -1 desactiva aquesta funcionalitat.
+- EXPIRE: Data en què l'usuari expira, en format AAAAMMDD. Si està comentat o no s'especifica, l'usuari no expira mai.
+- SHELL: Indica el shell per defecte per als nous usuaris. El valor predeterminat és /bin/sh, però es pot canviar a /bin/bash o qualsevol altre shell disponible.
+- SKEL: Especifica el directori des del qual es copiaran els fitxers de configuració per defecte quan es creï un nou usuari. El valor predeterminat és /etc/skel.
+- CREATE_MAIL_SPOOL: Si està establert a "yes", es crearà una carpeta de correu per a l'usuari nou. Per defecte, està establert a "yes".
+![gestiousunou6](gestiousunou6.png)
+- Aquestes son unes possibles modificacions (d'exemple)
+![gestiousunou7](gestiousunou7.png)
+
+- Un altre fitxer que podem modificar es el de la politica de contrasenyes que es aquest ```/etc/login.defs```
+```
+nano /etc/login.defs
+```
+Els parametres que ens permet modificar son:
+- MAIL_DIR: Defineix l'ubicació del directori d'emmagatzematge de correu per als nous usuaris. Per defecte, és /var/mail.
+- PASS_MAX_DAYS: Nombre màxim de dies que una contrasenya pot ser vàlida. Per defecte, pot ser 99999, el que significa que no expira mai.
+- PASS_MIN_DAYS: Nombre mínim de dies entre canvis de contrasenya. Per defecte, és 0, el que permet canvis immediats.
+- PASS_MIN_LEN: Longitud mínima de la contrasenya; no obstant això, en sistemes moderns, aquest paràmetre pot no tenir efecte, ja que la complexitat de la contrasenya es gestiona amb PAM (Pluggable Authentication Modules).
+- PASS_WARN_AGE: Nombre de dies abans de l'expiració de la contrasenya que es notifica a l'usuari. Per defecte, és 7.
+- UID_MIN i UID_MAX: Rangs mínim i màxim per als identificadors d'usuari (UID) per als nous usuaris. Això ajuda a assegurar que no es creïn usuaris amb UID que podrien entrar en conflicte amb comptes del sistema o altres usuaris.
+- GID_MIN i GID_MAX: Rangs mínim i màxim per als identificadors de grup (GID) per als nous grups.
+- CREATE_HOME: Si està establert a "yes", es crea el directori de casa de l'usuari quan es crea un nou compte; si no, no es crea. Per defecte, pot ser "no" en alguns sistemes per raons de seguretat o per configuracions específiques.
+- ENCRYPT_METHOD: Mètode de xifrat utilitzat per a les contrasenyes. Pot ser SHA512 o altres mètodes segons la versió del sistema.
+- UMASK: Defineix el valor per defecte de la màscara de permisos per als fitxers creats pels usuaris, afectant els permisos per defecte dels fitxers i directoris.
+- USERGROUPS_ENAB: Si està establert a "yes", quan un usuari es suprimeix, el seu grup principal també es suprimeix si no hi ha altres membres en aquest grup.
+
+![gestiousunou8](gestiousunou8.png)
+- Possibles modificacions (d'exemple)
+![gestiousunou9](gestiousunou9.png)
+
+Per últim veurem el directori ```/etc/skel```, dins d'aquest directori trobarem uns fitxers que son ```.bashrc``` ```.profile``` i ```.bash_logout```. Aquestos fitxers són scripts de configuració per al shell Bash i Sh que permeten personalitzar l'entorn de l'usuari.
+
+- Quan es crea un nou usuari amb un directori de casa, el contingut d'aquest directori /etc/skel es copia al nou directori de casa de l'usuari. Això permet configurar arxius i directoris per defecte per a tots els nous usuaris. 
+
+![gestiousunou10](gestiousunou10.png)
+
+```.bashrc```:
+
+Aquest arxiu s'executa cada vegada que es crea un nou shell interactiu que no és un shell de login (per exemple, quan obres una nova finestra de terminal). Es pot utilitzar per:
+
+- Definir variables d'entorn: Per a variables que no necessiten ser establertes en el context de login.
+
+- Ajustar alias: Crear atacs ràpids per a comandaments llargs o freqüents.
+
+- Configurar funcions de shell: Afegir funcions personalitzades per facilitar tasques rutinàries.
+
+- Personalitzar el prompt: Canviar l'aparença del prompt del terminal.
+
+- Establir paràmetres de shell: Com historial, compleció de comandaments, etc.
+
+- A continuació un exemple d'us, canviant un "alias". Farem que ll sigui equivalent a la comanda ls -l, així cada cop que posem ll s'executarà un ls -l.
+
+![gestiousunou11](gestiousunou11.png)
+![gestiousunou12](gestiousunou12.png)
+![gestiousunou13](gestiousunou13.png)
+
+```.profile```:
+
+Aquest fitxer s’executa automàticament quan l’usuari inicia sessió. Serveix per definir variables d’entorn i aplicar altres configuracions globals. Alguns exemples d’ús són:
+
+- Definir variables d’entorn, com PATH.
+
+- Configurar el prompt o ajustar altres opcions del shell.
+
+- Carregar altres fitxers de configuració, com .bashrc, si existeix.
+
+- A continuació un exemple d'us, canviarem l'editor de text per defecte i farem que sigui nano, ja que es el que més utilitzo.
+
+![gestiousunou14](gestiousunou14.png)
+![gestiousunou15](gestiousunou15.png)
+![gestiousunou16](gestiousunou16.png)
+
+```.bash_logout```
+
+Aquest fitxer s’executa de forma automàtica quan l’usuari tanca una sessió interactiva. És especialment útil per a:
+
+- Alliberar recursos o aturar processos temporals.
+
+- Mostrar missatges de comiat o finalització de sessió.
+
+- Executar scripts personalitzats per tasques de manteniment.
+
+- A continuació configurarem un missatge de sortida.
+
+![gestiousunou17](gestiousunou17.png)
+![gestiousunou18](gestiousunou18.png)
+![gestiousunou19](gestiousunou19.png)
+
 
 # Gestió de permisos
 En els casos d'un sistema multiusuari on vulguem que diferents usuaris tinguin certs permisos però no els mateixos, és important fer una bona gestió d'aquestos. Hi han vaires maneres de gestionar-ho, i les veurem a conitnuació.
@@ -380,13 +501,65 @@ e4defrag /dev/sda2 (desfragmentació)
 ```
 ![estructura6](estructura6.png)
 ![estructura7](estructura7.png)
+## - Particions
+### - Creació de particions i formateig
+- En primer lloc per entrar a un disc utilitzem la comanda:
+```
+fdisk /dev/sdb
+```
+- Aquí assignem la configuració de la partició, en aquest cas seguim amb la configuració per defecte fins al punt de la mida dels sectors, el primer (0-2048) esta reservat per al arrel?, i després assignem l'espai que vulguem. I finalment confirmem la configuració.
+
+![particio1](particio1.png)
+
+- Amb la comanda de fdisk -l, mirem la configuració que em fet sigui correcte.
+
+![particio2](particio2.png)
+
+- Per definir la mida del bloc que volem configurar podem utilitzar la següent comanda. Amb aquesta comanda fem la creació d'una partició amb el format d'arxius que vulguem. 
+```
+mkfs.ext4 -b 2048 /dev/sdb1
+```
+![particio3](particio3.png)
+- Per assegurar-nos de les mides podem utilitzar la següent comanda.
+![particio4](particio4.png)
+### - Muntatge
+- Dos opcions: temporal i definitiva:
+
+- Temporal: mount es temporal, un cop montem la partició els fitxers que hi havien abans no apareixen i visceversa. Per comprovar això podem seguir els següents passos crear un arxiu abans del muntatge i un després, així veurem que quan el disc esta muntat sol veiem l'arxiu que em fet mentres aquest estava muntat, en canvi l'arxiu previ sol el podrem visualitzar després de desmuntar-lo, mentres estigui muntat no el veurem. En aquest exemple fem una carpeta "particio1" i dins posem un arxiu "hola".
+
+![particio5](particio5.png)
+
+- Al fer un ls veiem que no ens apareix l'arxiu hola sino un que es diu "lost+found".
+
+![particio6](particio6.png)
+
+- Després provem de fer un arxiu nou adeu dins la partició i com veiem aquest si ens apareix al fer un ls de la carpeta.
+
+![particio7](particio7.png)
+
+- Permanent: es al fitxer /etc/fstab
+
+
+### - Compartició de la carpeta a través dels servidors SAMBA
 
 
 # Copia de seguretat i automatització de tasques
 
 # Quotes de disc
 
-# Enllaços d'interés
+# Enllaços d'interés / Webgrafia
 ```
 https://wiki.archlinux.org/title/Umask_(Espa%C3%B1ol)
+```
+```
+https://www.uv.es/diuvdocs/Jornades_Professors/03.%20DoCiencia/Documents%20DoCi%C3%A8ncia/C%C3%80NCER/Pr%C3%A0ctiques%20Bioinform%C3%A0tica_C%C3%A0ncer/Materials%20Practica%20Bioinform%C3%A0tica/Linux_UOC.pdf
+```
+```
+https://en.linuxadictos.com/chmod-modify-linux-permissions.html
+```
+```
+https://diposit.ub.edu/dspace/bitstream/2445/11723/1/Iniciaci%C3%B3%20a%20l'Administraci%C3%B3%20de%20Sistemes%20Operatius%20-%20Linux.pdf
+```
+```
+http://personal.biada.org/~ealonso/matin/linux/comandes_basiques.html
 ```
