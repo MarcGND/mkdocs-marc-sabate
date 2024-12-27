@@ -308,7 +308,7 @@ Els parametres que ens permet modificar son:
 
 Per últim veurem el directori ```/etc/skel```, dins d'aquest directori trobarem uns fitxers que son ```.bashrc``` ```.profile``` i ```.bash_logout```. Aquestos fitxers són scripts de configuració per al shell Bash i Sh que permeten personalitzar l'entorn de l'usuari.
 
-- Quan es crea un nou usuari amb un directori de casa, el contingut d'aquest directori /etc/skel es copia al nou directori de casa de l'usuari. Això permet configurar arxius i directoris per defecte per a tots els nous usuaris. 
+- Quan es crea un nou usuari amb un directori home, el contingut d'aquest directori /etc/skel es copia al nou directori home de l'usuari. Això permet configurar arxius i directoris per defecte per a tots els nous usuaris. 
 
 ![gestiousunou10](gestiousunou10.png)
 
@@ -537,10 +537,128 @@ mkfs.ext4 -b 2048 /dev/sdb1
 
 ![particio7](particio7.png)
 
-- Permanent: es al fitxer /etc/fstab
+- Permanent: es al fitxer ```/etc/fstab```
+
+![particio8](particio8.png)
+
+En aquest fitxer podem definir els següents parametres:
+
+- /dev/sdb1: És el dispositiu de bloc que es muntarà.
+
+- /home: És el punt de muntatge, el directori on es muntarà el sistema de fitxers de /dev/sdb1. En aquest cas, es munta a /home.
+
+- ext4: És el tipus de sistema de fitxers que utilitza la partició /dev/sdb1.
+
+- defaults: Són les opcions de muntatge. defaults significa que s'utilitzen les opcions estàndard de muntatge per a ext4.
+
+- 0: El primer zero es refereix a l'opció dump, que indica si el sistema de fitxers ha de ser copiat amb dump (un programa de còpia de seguretat). Un valor de 0 significa que no es farà còpia de seguretat automàticament.
+
+- 0: El segon zero és per a l'opció pass, que indica l'ordre en què fsck (programa de comprovació i reparació de sistemes de fitxers) ha de ser executat en el sistema de fitxers durant l'inici. Un valor de 0 significa que fsck no es farà automàticament en aquest sistema de fitxers.
 
 
 ### - Compartició de la carpeta a través dels servidors SAMBA
+#### ext4
+
+- El primer pas en el nostre cas es canviar a l'adaptador pont de la nostra màquina virtual.
+
+![samba1](samba1.png)
+
+- Seguidament instal·lem el smb client. L'eina smbclient et permet accedir als recursos compartits d'un servidor SMB, de manera similar a un client FTP de línia de comandes. La pots utilitzar, per exemple, per carregar i descarregar fitxers cap a i des d'un recurs compartit.
+```
+apt install smbclient
+```
+
+![samba2](samba2.png)
+
+- Després instal·larem el nautilus.
+```
+apt install nautilus-share
+```
+- Per comprovar si el nautilus funciona hem de seleccionar l'opció de ```recursos compartits``` d'un directori, el mes probable es que no funcioni.
+
+![samba3](samba3.png)
+![samba4](samba4.png)
+![samba5](samba5.png)
+
+- Per continuar com aquest pas no ens ha funcionat instal·lem samba.
+```
+apt install samba
+```
+![samba6](samba6.png)
+
+- Un cop tenim samba instal·lat accedirem a un dels seus arxius de configuració. ```smb.conf```. En aquest arxiu afegirem la nostra partició i la configurarem per l'usuari "platano" tal i com es mostra a continuació.
+```
+nano /etc/samba/smb.conf
+```
+![samba7](samba7.png)
+
+- Per acabar amb la configuració de l'arxiu i els canvis s'apliquin hem de reiniciar el sistema.
+![samba8](samba8.png)
+
+- Abans de procedir canviarem algunes opcions de permisos i propietats del grup, com es mostra a continuació. També utilitzarem el nobody nogroup, això es fa per assegurar que el servei no exposi accidentalment més del sistema del que està pensat.
+
+![samba9](samba9.png)
+
+- Per acabar, crearem l'usuari "platano" per al qual em configurat el servidor samba.
+
+![samba10](samba10.png)
+
+- A continuació, desde la nostra màquina (no virtual) visualitzarem els recursos compartits de la següent manera:
+
+![samba11](samba11.png)
+
+- Per connectar-nos al servidor compartit ho farem a través del navegador de fitxers, a l'apartat d'altres ubicacions i introduriem l'ardreça corresponent.
+
+![samba12](samba12.png)
+![samba13](samba13.png)
+![samba14](samba14.png)
+![samba15](samba15.png)
+
+- Com es pot veure a l'imatge, he creat un directori anomenat si, per comprovar que funciona la connexió amb els dos sentits, i que desde la màquina virtual també pot veure el que ha fet platano.
+![samba16](samba16.png)
+
+#### ntfs
+
+- En primer lloc consultarem l'estat del nostre disc amb la comanda ```fdisk -l``` per assegurar-nos de que encara tenim espai per un altra partició.
+![samba17](samba17.png)
+
+- Ens queda encara 1G per seguir, per tant, farem els mateixos passos que abans. Menys en la part del muntatge.
+![samba18](samba18.png)
+
+- Per assegurar-nos que ho hem fet correctament podem tornar a fer un ```fdisk -l```
+![samba19](samba19.png)
+
+- En aquest pas es on es troba la diferencia, formatarem la partició per amb un sistema de fitxers diferent. 
+![samba20](samba20.png)
+
+- Seguidament, farem els mateixos passos que a la particio1, creem un directori i dins un arixu hola.
+![samba21](samba21.png)
+
+- En aquest cas volem fer un muntatge definitiu, així que modificarem l'arxiu ```fstab```. L'única diferencia serà donar-li el format NTFS. També afegirem el uid i gid amb nobody nogroup, tal i com hem fet amb l'ext4, amb la diferencia que aquí ho apliquem directament al fstab per el format d'arxiu NTFS.
+![samba22](samba22.png)
+
+- Per continuar, assignarem al fitxer de configuració de samba a l'usuario platano per a poder accedir al servidor, tal i com hem fet abans.
+![samba23](samba23.png)
+
+- Comprovem igual que hem fet abans desde el nostre client (fora de la maquina virtual) que veiem la partició creada.
+![samba24](samba24.png)
+![samba25](samba25.png)
+
+- Per últim creem un directori nou per fer-li proves.
+![samba26](samba26.png)
+![samba27](samba27.png)
+
+- Ara comprovarem si el nostre servidor samba també funciona amb un sistema operatiu windows, per fer-ho crearem una màquina virtual windows 10, i entrarem desde el "explorador d'archivos" a l'apartat de xarxa i ens connectarem a una nova unitat de xarxa tal i com es mostra a continuació.
+![samba28](samba28.png)
+- Com es pot veure he seleccionat l'opció "conectar con otras credenciales", això es per a que platano pugui entrar.
+![samba29](samba29.png)
+
+- També podem veure la carpeta de proves que hem creat abans.
+![samba30](samba30.png)
+
+- Per comprovar si el funcionament es bidireccional crearem una altra carpeta de proves.
+![samba31](samba31.png)
+![samba32](samba32.png)
 
 
 # Copia de seguretat i automatització de tasques
