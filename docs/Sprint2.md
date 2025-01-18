@@ -663,6 +663,103 @@ nano /etc/samba/smb.conf
 
 # Copia de seguretat i automatització de tasques
 
+## Teoria
+
+Hi han tres tipus de copies: completes, diferencials, incrementals. Bona politica de copies, bona gestió dels tipus. 
+
+- Completa: Sempre que es pugui fer una copia completa, (buscar teoria, ventatga principal, desaventatge principal, i quina hem de recuperar). 
+
+- Diferencials: copia la diferencia de la completa, sempre de la última, es més rapida. Pero per a recuperar-la sempre fan falta tant l'última completa com l'última diferencial, ocupa menys espai.
+
+- Incremental: Copia la diferencia de la completa, després però sol copia l'anterior incremental, hauries de recuperar totes les incrementals. Menys espai, per recuperar farira falta l'última completa i totes les incrementals.
+
+## Programes (sol 1 opció)
+### Deja-dup (opcional)
+### Duplicity
+
+## Comandes
+### Explicació i taula comparativa
+### cp
+
+- És una copia simple no intel·ligent. Copia tot sense miraments sol funciona en local.
+
+### rsync
+
+- Es una copia intel·ligent sol copia els fitxers modificats, copies entre maquines utilitzant ssh.
+
+### dd
+
+- No es per fer copies de fitxers / arxius, sino a nivell particions i disc, es com una clonació. Treballa a nivell local i copia tot, no es intel·ligent. També serveix per sobrescriure dades sector a sector, diferent a formatar, dona seguretat per no recuperar les dades previes, esborra tot a nivell de bloc.
+
+## Automatització amb scripts, cron i anacron
+### Diferencies entre anacron i cron
+
+Cron: 
+
+- Funció: Automatitza tasques específiques en moments precisos (hora, dia, mes, etc.).
+- Ús: És útil quan vols que una tasca s'executi a una hora concreta, per exemple, cada dia a les 2:00 AM. 
+- Limitació: Només funciona quan l'ordinador està encès; si està apagat en el moment programat, la tasca no s'executarà.
+
+ Anacron:
+
+- Funció: També automatitza tasques, però està dissenyat per a màquines que no estan sempre enceses.
+- Ús: Ideal per a tasques de manteniment del sistema que no depenen de l'hora exacta, com actualitzacions periòdiques. Quan engeguem l'ordinador, anacron comprova si hi ha tasques pendents i les executa.
+- Avantatge: Funciona bé en ordinadors que es tanquen sovint, ja que no es perd cap tasca programada.
+
+Cron: Per tasques específiques per a un usuari o quan necessites precisió temporal (per exemple, backups diaris a una hora concreta).
+
+Anacron: Per tasques generals, com manteniment del sistema que no requereixen ser executades en un moment exacte.
+
+Configuració de cron:
+
+- Arxiu global: ```/etc/crontab``` per tasques que afecten tots els usuaris.
+- Usuari específic: Utilitza crontab -e -u usuari per configurar tasques per a un usuari particular.
+- Carpetes predeterminades: Dins de ```/etc/cron.daily/```, ```/etc/cron.monthly/```, i ```/etc/cron.annually/``` per scripts que s'executin diàriament, mensualment o anualment, respectivament.
+
+Configuració de anacron:
+
+- Arxiu: ```/etc/anacrontab``` on es defineixen les tasques d'anacron.
+
+![cron1](cron1.png)
+
+### Exemple d'un script
+
+- Per preparar un script primer crearem els directoris que volem copiar, que es troben dins del directori Imatges.
+
+![cron3](cron3.png)
+
+- En primer lloc crearem un script que crea una copia comprimida del directori /home/alumnat/Imatges/ i el desa a l'escriptori amb un nom que inclou la data i hora actuals.
+
+![cron2](cron2.png)
+
+- A continuació dins del fitxer crontab, afegim la ruta del nostre script. Com es pot verue a la següent imatge li definim el minut hora i dia del mes, i amb un * a l'apartat dels dies per a que es faci cada dia.
+
+![cron4](cron4.png)
+
+- Per comprovar el seu funcionament esperem fins l'hora que em designat, com es veu a la següent imatge es crea l'arxiu comprimit, al descomprimir-lo podem veure que si ha fet la copia dels dos directoris que hi ha a la carpeta Imatges.
+
+![cron5](cron5.png)
+
+- A continuació deixem la linea del crontab comentada. I seguidament del nostre escript li traurem el punt sh i el mourem a la carpeta de cron.daily.
+
+![cron6](cron6.png)
+![cron7](cron7.png)
+![cron8](cron8.png)
+
+- Per assegurar que l'script s'executi al obrir l'ordinador, obrim el fitxer ```/var/spool/anacron/cron.daily```, aquí s'indica l'última vegada que es van executar les tasques diàries. En aquest cas ens interessa que no hi hagui res.
+
+![cron9](cron9.png)
+
+- Amb l'script al lloc de les tasques diaries i amb la comprovació de que no s'han realitzat encara obrim ```/etc/anacrontab``` i el configurem tal i com es mostra a continuació. Posem que s'executin en 1 minut després de l'arrencada del dispositiu.
+
+![cron10](cron10.png)
+
+- Un cop reiniciat l'ordinador esperem un minut i veurem que a l'escriptori apareix la copia del directori imatges, i si mirem el cron.daily veurem que s'ha executat la tasca diaria.
+
+![cron11](cron11.png)
+![cron12](cron12.png)
+
+
 # Quotes de disc
 Les quotes de disc són unes limitacions imposades a l'ús d'emmagatzematge d'un sistema en aquest cas cas Ubuntu. És poden limitar tant per usuaris com per grups, això es fa per optimitzar l'espai i no fer un malbaratament d'espai. Les quotes es poden modificar en entorns de servidors o ordinadors multiusuari, i els limets pot ser tant de mida com de número de fitxers.
 
