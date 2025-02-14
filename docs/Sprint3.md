@@ -254,4 +254,157 @@ Per instal·lar la part del NFS a Windows ens hem de dirigir a la part del panel
 ![NFS4](NFS4.png)
 ![NFS5](NFS5.png)
 
+### Utilitzar el servidor NFS
+
+- Per començar a utilitzar el servidor NFS el primer que farem serà crear un directori a la nostra màquina servidor i li canviarem els permisos.
+
+![NFS6](NFS6.png)
+
+- Per poder compartir la carpeta que hem fet modificarem l'arxiu ```/etc/exports``` i aquí posarem la ruta de la nostra carpeta i els següents parametres. *: Permet l'acces a tots els clients. rw: Permet lectura i escriptura (read-write). sync: Assegura que les operacions d'escriptura es completen abans de respondre al client. no_subtree_check: Millora el rendiment en no comprovar els subdirectoris.
+
+![NFS7](NFS7.png)
+
+- Un cop feta aquesta modificació haurem de reiniciar el sevei per a que els canvi s'apliquin. Després crearem un arxiu per fer proves a la carpeta compartida desde la nostra màquina servidor.
+
+![NFS8](NFS8.png)
+
+- Ara que ja tenim la carpeta preparada entrarem desde el nostre client Windows, a l'explorador d'arxius si anem a altres ubiacacions i allà posem l'adreça del nostre servidor podrem connectar-nos.
+
+![NFS9](NFS9.png)
+
+- Per fer alguna prova crearem un nou arxiu de text, també veurem que el de proves es pot llegir correctament.
+
+![NFS10](NFS10.png)
+![NFS11](NFS11.png)
+
+- Comprovarem que s'hagi efectuat tot correctament des de el propi servidor, amb la comanda ls -l per veure quins permisos tenen els fitxers.
+
+![NFS12](NFS12.png)
+
+- A continuació entrarem des de el nostre client Ubuntu, aquest cop muntarem la carpeta compartida a un directori que crearem per allotjar-la, també haurem de canviar-li els permisos i ara per muntra-la hem d'utilitzar la següent comanda.
+```
+mount ipservidor:/compartida /directoriclient
+```
+
+![NFS13](NFS13.png)
+
+- Seguidament, revisarem el contingut de la carpeta compartida per veure si es el mateix i després crearem un fitxer nou i veurem els seus permisos.
+
+![NFS14](NFS14.png)
+
+![NFS15](NFS15.png)
+
+#### NFS amb usuaris LDAP
+
+- Per començar, tornem a configurar la nova ruta que volem compartir amb els usuaris de ldap des de la nostra màquina servidor. 
+
+![NFS16](NFS16.png)
+
+- Un cop creada la ruta, crearem el directori amb els permisos corresponents des del servidor.
+
+![NFS17](NFS17.png)
+
+- La principal diferencia es que ara també haurem de modificar el ldap per tal de que el directori de la home dels usuaris sigui la carpeta compartida que hem fet.
+
+![NFS18](NFS18.png)
+
+- Com hem creat un usuari nou per fer aquestes proves l'hem d'afegir al ldap.
+
+![NFS19](NFS19.png)
+
+- Ara ve lo del FSTAB.
+
+
+
 # Servidor Samba
+
+Samba és una implementació lliure del protocol SMB/CIFS, que permet compartir arxius i impressores entre sistemes Windows i Linux. Samba pot autenticar usuaris localment o mitjançant un servidor LDAP. Això permet gestionar usuaris i permisos de manera centralitzada.
+
+## Instal·lació i conf server
+- EN primer lloc com hem vist altres vegades farem un update del nostre servidor i després procedirem instal·lant el paquet smb. 
+```
+apt install samba
+```
+![sambaserver](sambaserver.png)
+
+- Un cop tenim el paquet instal·lat procedirem a crear una carpeta a l'arrel i assignar-li els permisos adients.
+
+![sambaserver2](sambaserver2.png)
+
+- Per continuar, entrarem al fitxer de configuració de samba ```/etc/samba/smb.conf``` aquí definirem la ruta de la carpeta que volem compartir i adicionalment podrem assignar rols i permisos als usuaris i grups, en aquest cas farem uns usaris del grup colors per veure un amb tots el permisos, un amb sol permis de lectura i un sense permisos.
+
+![sambaserver3](sambaserver3.png)
+
+- Després de cada cop que fem una modificació al fitxer de configuració per apliacr aquestos canvis haurem de fer un reeinici del sistema, amb la comanda ```systemctl restart smbd nmbd```.
+
+![sambaserver4](sambaserver4.png)
+
+- A continuació, crearem els usuaris, aquest cop ho farem amb una comanda per a que aquest no iniciin sessió, i el seu interpret de comandes sigui el /bin/bash. 
+```
+useradd -M -s /sbin/nologin usuari
+```
+
+![sambaserver5](sambaserver5.png)
+
+- Amb el matiex metode que creem el primer usuari crearem els altres i el grup. Com es pot apreciar l'usuari blau no està al grup.
+
+![sambaserver6](sambaserver6.png)
+
+- Per comprovar que els usuaris i el grup han estat creats correctament farem un tail dels fitxers ```/etc/group``` i ```/etc/passwd```
+
+![sambaserver7](sambaserver7.png)
+
+- Per a que aquestos usuaris pugin entrar al servidor samba els assignem una contrasenya per a aquest servei amb la comanda següent. 
+```
+smbpasswd -a usuari
+```
+
+![sambaserver8](sambaserver8.png)
+
+- Per últim canviarem algúns permisos com ara que l'usuari roig no pugui entrar, que els usuaris del grup colors puguin llegir i que balu pot llegir i escriure. També podrem iniciar sessió com a convidat.
+
+![sambaserver9](sambaserver9.png)
+
+## Instal·lació i proves client
+
+- Per configurar la part del client, repetirem els passos anteriors, fer un update i després instal·lar el paquet de samba.
+
+![sambaclient](sambaclient.png)
+
+- Un cop hem instal·lat el paquet obrim l'explorador d'arxius i ha altres ubicacions posarem l'adreça del nostre server i amb que ens connectem (samba).
+
+![sambaclient2](sambaclient2.png)
+
+- Un cop ens connectem la primera pantalla que ens apareix es per entrar com a convidat o com usuari registrat. Primer farem les proves amb un usuari convidat.
+
+![sambaclietn3](sambaclient3.png)
+
+- ```IMPORTANT``` (aquesta part es al server) .Ara per assegurar-nos eliminem l'opció de read only ja que també volem escriure amb els usuaris. Un cop fet els canvis hem de reiniciar el sistema.
+
+![sambaclient4](sambaclient4.png)
+![sambaclient5](sambaclient5.png)
+
+- Quan acabem amb al servidor, tornem al client i fem les proves corresponents amb els usuaris. Per això ens connectarem a la carpeta compartida a través de l'explorador d'arxius i a la part d'altres ubiacacions possarem l'adreça del nostre servidor samba. I la primera opció serà entrar com convidat / anonim. Per comprovar que podem crear un directori.
+
+![sambaclient6](sambaclient6.png)
+
+- Després, provarem amb el primer usuari i el que te mes permisos que és blau. Amb el mateix metode que abans posarem les credencials de blau i crearem un directori nou.
+
+![sambaclient7](sambaclient7.png)
+![sambaclient8](sambaclient8.png)
+
+- Per veure si els directoris que hem creat tenen els permisos corresponents als seus usuaris anem al ```SERVER``` i allà dins de la carpeta que compartim amb samba i fem un ls -l.
+
+![sambaclient9](sambaclient9.png)
+
+- Com funciona adequadament procedim amb els usuaris que queden, tornem al client i entrem com roig, i com aquest no pot entrar ens retorna a la pantalla de "login".
+
+![sambaclient10](sambaclient10.png)
+
+- Finalment entrarem amb l'usuari groc i farem un directori, com no te permisos d'escriptura ens donarà un error.
+
+![sambaclient11](sambaclient11.png)
+![sambaclient12](sambaclient12.png)
+
+
+## Utilitzar usuaris ldap per autenticar amb samba 
