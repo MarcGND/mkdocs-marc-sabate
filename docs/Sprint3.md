@@ -92,6 +92,48 @@ apt install slapd ldap-utils
 ![server6](server6.png)
 
 # Entorns gràfics
+- En aquest apartat veurem com configurar un LDAP amb interficie gràfica en aquest cas he escollit Apache Directory Studio perqué és intuitiu i senzill.
+
+## Apache Directory Studio
+
+- En primer lloc, ens descarregem l'apliació de la pàgina oficial. Després l'únic que hem de fer es descomprimir el paquet i executar-lo.
+
+![ADS](ADS.png)
+![ADS1](ADS1.png)
+
+- Un cop dins buscarem la connexió que tenim del LDAP i fem login amb les nostres credencials, llavors afegirem noves entrades, aquestes poden ser creades des de zero o amb plantilles, en aquest cas he escollit fer-ne una amb una plantilla per crear un nou usuari. Com podrem comprovar els usuaris que hem creat en els passos anteriors estan presents a la nostra estructura.
+
+![ADS3](ADS3.png)
+![ADS4](ADS4.png)
+![ADS5](ADS5.png)
+![ADS6](ADS6.png)
+
+- Ara afegirem les classes del objecte que volem agregar.
+
+![ADS7](ADS7.png)
+
+- A continuació escollim un cn per l'usuari.
+
+![ADS8](ADS8.png)
+
+- Per últim acabarem de configurar els atributs per a que l'usuari pugui ser utilitzat.
+
+![ADS9](ADS9.png)
+
+- Com podem veure tenim ja l'usuari creat, tot i això encara fan falta definir les contrasenyes i l'interpret de comandes.
+
+![ADS10](ADS10.png)
+
+- En aquest cas he escollit la carpeta compartida de perfils per crear la home. I després he donat una contrasenya i el /bin/bash per al loginshell.
+
+![ADS11](ADS11.png)
+![ADS12](ADS12.png)
+
+- Per entrar amb el client amb l'usuari nou hem d'escollir l'opció de no esteu llistat i allà posem les nostres credencials i ens crearà la home al directori escollit, després podrem entrar i comprovar que estem amb l'usuari correcte.
+
+![ADS13](ADS13.png)
+![ADS14](ADS14.png)
+
 # Unir equips al domini
 
 En aquesta part veurem com connectar un equip client al domini que hem creat prèviament.
@@ -306,13 +348,26 @@ mount ipservidor:/compartida /directoriclient
 
 - La principal diferencia es que ara també haurem de modificar el ldap per tal de que el directori de la home dels usuaris sigui la carpeta compartida que hem fet.
 
-![NFS18](NFS18.png)
+![LFAPF](LDAPF.png)
 
 - Com hem creat un usuari nou per fer aquestes proves l'hem d'afegir al ldap.
 
-![NFS19](NFS19.png)
+![LDAPF2](LDAPF2.png)
 
-- Ara ve lo del FSTAB.
+- ```IMPORTANT``` Aquesta part es configura al ```CLIENT```, la mala configuració pot provocar que el sistema no arranqui. Primer crearem la carpeta amb els seus permisos pertinents.
+
+![LDAPF4](LDAPF4.png)
+
+- Ara configurarem el fitxer ```fstab``` es important copiar correctament aquests parametres. Bàsicament el que estem fent es muntar un directori nfs. 
+
+![LDAPF3](LDAPF3.png)
+
+- Per últim reiniciem el nostre client i quan ens demani les credencials d'usuari posem que no estem llistats i escrivim les credencials de l'usuari en aquest cas alu4.
+
+![LDAPF5](LDAPF5.png)
+![LDAPF6](LDAPF6.png)
+
+- Un cop dins comprovem que l'usuari es el corresponent.
 
 
 
