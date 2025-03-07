@@ -130,3 +130,4 @@ systemctl daemon-reload
 ```
 ![RAID1-31](RAID1-31.png)
 
+
