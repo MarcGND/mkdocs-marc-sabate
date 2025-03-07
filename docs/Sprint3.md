@@ -463,3 +463,5 @@ smbpasswd -a usuari
 
 
 ## Utilitzar usuaris ldap per autenticar amb samba 
+
+- Aquest apartat no es pot realitzar.
