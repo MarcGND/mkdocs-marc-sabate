@@ -130,4 +130,95 @@ systemctl daemon-reload
 ```
 ![RAID1-31](RAID1-31.png)
 
+## RAID 5
+
+
+- En primer lloc, per fer una confiuració del RAID 5, necessitarem com a minim dos discs que en un RAID 1, per tant es moment d'afegir els discs.
+![RAID5-1](RAID5-1.png)
+![RAID5-2](RAID5-2.png)
+
+
+- Com anteriorment ja hem vist com configurar els discs per muntar-los, ho farem igual per als quatre discs.
+![RAID5-3](RAID5-3.png)
+
+
+- Amb la comanda ```fdisk -l``` comprovarem que tot estigui correctament.
+![RAID5-4](RAID5-4.png)
+![RAID5-5](RAID5-5.png)
+
+
+- Seugint els pasos igual que abans ara crearem la carpeta del RAID, el RAID, l'arxiu de configuració i finalment muntarem la carpeta. Per ara son els mateixos procediments que amb el RAID 1. la diferencia principal es a la comanda:
+```
+mdadm --create /dev/md0 --level=5 --raid-devices=5 /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1
+```
+![RAID5-6](RAID5-6.png)
+![RAID5-7](RAID5-7.png)
+![RAID5-8](RAID5-8.png)
+![RAID5-9](RAID5-9.png)
+![RAID5-10](RAID5-10.png)
+
+
+- Un cop establerta la configuració el que farem serà reiniciar el sistema i comprovar l'estat del RAID amb la comanda detail.
+![RAID5-11](RAID5-12.png)
+
+
+- Per fer proves crearem un fitxer i un directori tal com hem fet abans.
+![RAID5-13](RAID5-13.png)
+
+
+- La primera prova igual que l'anterior serà desactivar un dels discs i comprovar el funcionament.
+![RAID5-14](RAID5-14.png)
+![RAID5-15](RAID5-15.png)
+
+
+- Com s'aprecia la informació es pot consultar igualment. També podem veure que el comportament dels discs es igual amb tots els RAID per tant la diferencia radica en quants discs necessita el RAID per funcionar i per això descativarem i borrarem els discs fins veure que la informació no sigui visible.
+
+
+```El propi sistema ja ens avisa de que amb dos discs fora no podrà treballar```
+![RAID5-16](RAID5-16.png)
+
+
+- Per tant el que farem serà treure el disc "manualment".
+![RAID5-17](RAID5-17.png)
+![RAID5-18](RAID5-18.png)
+
+
+- Com podem veure l'estat passa a ser inactiu. En aquesta situació el que haurem de fer es col·locar un disc nou primer, formatar-lo i després recuperar el desactivat. Aquest es el cas més extrany i mes complicat. Sino tot es molt paregut o igual al RAID1.
+![RAID5-19](RAID5-19.png)
+
+
+- Com en aquest cas sol tenim 2 disc funcionant actualment l'array no arranca i ens donarà problemes, si tenim el disc nou preparat i amb el format que tenia l'anterior el que farem serà obligar a l'array a reconstruir-se amb la seguent comanda:
+```
+mdadm --assamble --force /dev/md0 /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1
+```
+![RAID5-20](RAID5-20.png)
+
+
+- Un cop arrancat l'array comprovem quin es el seu estat i com podem veure ja funciona pero ens segueix fallant un dels discs que hem eliminat, el sdc. Ara no hi ha cap problema ja que el RAID funciona ara sol hem de muntar la part que ens falta.
+
+
+![RAID5-21](RAID5-21.png)
+![RAID5-22](RAID5-22.png)
+
+
+- Com bé sabem, tornem a afegir el disc que ens falta, el c, al RAID. Després comprovarem l'estat del RAID i de les dades.
+![RAID5-23](RAID5-23.png)
+![RAID5-24](RAID5-24.png)
+
+
+- ```En conclusió els errors son pareguts entre el RAID1 i RAID5. I si mai tenim el problema de que l'array no inicia la comanda clau un cop tenim els discs amb el seu format es:```
+```
+mdadm --assamble --force /dev/md0
+```
+
+
+- Per acabar desmuntarem el RAID5 com hem fet abans, seguint els passos de la captura. ```I reiniciant el sistema```.
+![RAID5-25](RAID5-25.png)
+![RAID5-final](RAID5-final.png)
+
+
+# Enllaços d'interés / Webgrafia
+```
+https://daniellop.com/que-es-raid-5/
+```
 
