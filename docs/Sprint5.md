@@ -1,3 +1,7 @@
+## Introducció
+En aquest sprint veurem com funciona la monitorització tant de Logs del sistema, ja sigui de forma remota o local; i també com funcionen les eines d'Ubuntu per monitortizar el rendiment de la nostra màquina.
+A més a més, descriurem com fer que un dispositiu ens serveixi per fer de servidor d'actualitzacions. I per últim utilitzarem l'eina Lynis per simular una auditoria.
+
 ## Monitorització
 ### LOGS
 
@@ -35,6 +39,31 @@ El journal consulta el fitxer systemd journal, que unifica logs de diferents ser
 - En aquest cas farem la consulta ```journalctl -p crit```, el -p filtra els registres i el crit els que son critics. El resultat ens mostra errors del RAID, un error d'autenticació que em va passar per equivocar-me amb la contrasenya tres cops, i després la BOMBA i les alertes que hem generat.
 ![LOG9](LOG9.png)
 
+#### - LOGS en xarxa
+##### -Receptor
+- El primer pass es configurar el dispositiu que rebrà els logs. Instal·lant el següent paquet i modificant l'arxiu ```/etc/rsyslog.conf``` seguint els passos que es mostraràn que són treure el comentari de ```module``` i ```input```. 
+```
+sudo apt install rsyslog
+```
+![logremot](logremot.png)
+![logremot1](logremot1.png)
+
+- Un cop desada la configuració farem un reinici del servei rsyslog i obrirem els ports per a que el tallafocs ens permeti la connexió.
+![logremot2](logremot2.png)
+
+##### -Emissor
+- El següent pas es configurar el dispositiu que rebrà els LOGS. Torenem a instal·lar el paquet ```rsyslog``` i configurarem el fitxer ```/etc/rsyslog.conf```. El més important es posar l'ip correctament
+![logremot3](logremot3.png)
+
+- En acabar la configuració de l'arxiu a la màquina ```receptor``` utilitzarem la comanda tail -f/var/log/syslog.
+![logremot4](logremot4.png)
+
+- Ara ens situem a ```l'emissor``` on farem un intent fallit de connexió com a root per generar un log.
+![logremot5](logremot5.png)
+
+- Finalment desde la màquina ```receptor``` veurem que ens arriba un registre amb l'ip de l'altra màquina.
+![logremot6](logremot6.png)
+
 ### - Rendiment
 
 Per visualitzar el rendiment podem utilitzar una eina propia d'Ubuntu, el monitor del sistema. 
@@ -48,6 +77,9 @@ Per visualitzar el rendiment podem utilitzar una eina propia d'Ubuntu, el monito
 
 - Aquí podem veure altres processos ordenats per us de la cpu amb %.
 ![Rendiment3](Rendiment3.png)
+
+- Per acabar també podem veure el consum de recursos de forma gràfica.
+![Rendiment4](Rendiment4.png)
 
 # Servidor actualitzacions
 
@@ -91,5 +123,39 @@ Si hem seguit tots aquests passos la part de configurar el servidor ja ha finali
 - Per acabar, veurem que si que agafa els paquets del servidor, sol ens quedaria verificar que s'ha instal·lat el chrome correctament.
 ![SAC6](SAC6.png)
 
+# Auditoria
 
+## - Lynis
 
+- El primer pas que hem dur a terme es fer un update, un cop acabat instal·larem el Lynis
+```
+sudo apt install lynis -y
+```
+![lynis](lynis.png)
+- Un cop tenim el paquet instal·lat executarem el programa per fer un escaneig al sistema.
+```
+lynis audit system
+```
+![lynis1](lynis1.png)
+- Un cop executada aquesta comanda el programa començarà un escaneig de tot el sistema i els seus apartats, per cada part ens detallarà l'estat si esta correcte, no trobat, o amb algun error. I per últim ens mostrarà un resum amb els detalls del que ha escanejat.
+![lynis3](lynis3.png)
+![lynis2](lynis2.png)
+
+- En cas de voler fer un escaneig ràpid podem utilitzar la següent comanda. El resultat es similar a l'anterior.
+```
+lynis -Q
+```
+![lynis4](lynis4.png)
+
+- Als dos escaneigos que hem realitzat ens trobarem que hi ha un apartat de sugerencies per millorar la seguretat del nostre dispositiu, i com podrem veure al resum detallat, ens diu el nivell de "hardening index" que vindria a ser un índex de nivell de seguretat.
+![lynis5](lynis5.png)
+![lynis6](lynis6.png)
+
+- Per millorar aquest index, podem començar instal·lant i seguint els passos de les propostes, l'únic porblema es que el paquet ```listbugs``` ha quedat obsolet i ara es diu ```listchanges```. A continuació mostraré com instal·lo diversos paquets i el resultat de la millora del índex.
+
+![lynis7](lynis7.png)
+![lynis8](lynis8.png)
+![lynis9](lynis9.png)
+![lynis10](lynis10.png)
+![lynis11](lynis11.png)
+![lynis12](lynis12.png)
